@@ -9,7 +9,7 @@ object Exercise1 {
   }
 
   def base64Hex(hexString: String) : String = {
-    if (hexString.contains("[^0-9A-Fa-f") || hexString.length % 2 != 0) throw new Exception(s"Not a hex string: ${hexString}")
+    if (hexString.contains("[^0-9A-Fa-f]") || hexString.length % 2 != 0) throw new Exception(s"Not a hex string: ${hexString}")
     val byteArray = hexString.grouped(2).map(Integer.parseInt(_,16).toByte).toArray
     generateBase64String(byteArray, "")
   }
