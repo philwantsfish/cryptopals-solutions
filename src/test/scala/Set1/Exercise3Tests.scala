@@ -2,8 +2,9 @@ package Set1
 
 import org.junit.Test
 import Exercise3._
+import org.scalatest.junit.JUnitSuite
 
-class Exercise3Tests {
+class Exercise3Tests extends JUnitSuite {
   @Test
   def testSingleByteXor = {
     val message = "2398492837987EF87333"
@@ -25,5 +26,12 @@ class Exercise3Tests {
     val messages = getAllPossibleMessages(cipherText)
     val scoredMessages = scoreMessagesWithFrequencyAnalysis(messages)
     assert("Cooking MC's like a pound of bacon" == scoredMessages(0)._2, s"Found message: ${scoredMessages(0)._2}" )
+  }
+
+  @Test
+  def testMatasano2 = {
+    val cipherText = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
+    val answer = "Cooking MC's like a pound of bacon"
+    assert(answer == decryptSingleByteXor(cipherText))
   }
 }

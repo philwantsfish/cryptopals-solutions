@@ -16,7 +16,7 @@ class Exercise1Tests extends JUnitSuite {
   def testBase64 = {
     val testCases = Map("AAA" -> "QUFB")
     for ((key, solution) <- testCases) {
-      assert(Exercise1.base64String(key) == solution, s"Key ${key} did not match ${solution}")
+      assert(Exercise1.base64(key) == solution, s"Key ${key} did not match ${solution}")
     }
   }
 
@@ -24,7 +24,7 @@ class Exercise1Tests extends JUnitSuite {
   def testBase64Padding = {
     val testCases = Map("AAAA" -> "QUFBQQ==")
     for ((key, solution) <- testCases) {
-      assert(Exercise1.base64String(key) == solution, s"Key ${key} did not match ${solution}")
+      assert(Exercise1.base64(key) == solution, s"Key ${key} did not match ${solution}")
     }
   }
 
@@ -32,7 +32,7 @@ class Exercise1Tests extends JUnitSuite {
   def testBase64Padding2 = {
     val testCases = Map("AAAAA" -> "QUFBQUE==")
     for ((key, solution) <- testCases) {
-      assert(Exercise1.base64String(key) == solution, s"Key ${key} did not match ${solution}")
+      assert(Exercise1.base64(key) == solution, s"Key ${key} did not match ${solution}")
     }
   }
 

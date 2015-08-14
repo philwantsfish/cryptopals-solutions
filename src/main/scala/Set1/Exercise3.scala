@@ -14,9 +14,17 @@ object Exercise3 {
     fixedXor(hexString, toHexString(fullKey))
   }
 
-  def getAllPossibleMessages(cipherText: String) = (0x00 to 0xFF).map{ key => singleByteXor(cipherText, key.toByte) }.toArray.map{a => toASCIIString(toByteArray(a))}
+  def getAllPossibleMessages(cipherText: String) : Array[String] = (0x00 to 0xFF).map{ key => singleByteXor(cipherText, key.toByte) }.toArray.map{a => toASCIIString(toByteArray(a))}
   def scoreMessageWithFrequnecyAnalysis(message : String) : Double = { message.filter{c => (c > 'a' && c < 'z') || (c > 'A' && c < 'Z') || (c == ' ')}.map{c => letterFrequencyMap(c.toLower)}.foldLeft(0.0)(_ + _) }
   def scoreMessagesWithFrequencyAnalysis(messages: Array[String]) = messages.map{ m => (scoreMessageWithFrequnecyAnalysis(m), m) }.sortWith(_._1 > _._1)
+
+  def decryptSingleByteXor(cipherText: String) : String = {scoreMessagesWithFrequencyAnalysis(getAllPossibleMessages(cipherText))(0)._2}
+
+  def decryptSingleByteXorTopThree(cipherText: String) : Array[String] = {
+    val allMessages = scoreMessagesWithFrequencyAnalysis(getAllPossibleMessages(cipherText))
+
+    Array(allMessages(0)._2, allMessages(1)._2, allMessages(2)._2)
+  }
 
 
   // Taken from https://en.wikipedia.org/wiki/Letter_frequency , frequencies rounded to 2 scientific digits

@@ -2,8 +2,9 @@ package Set1
 
 import Exercise4._
 import org.junit.Test
+import org.scalatest.junit.JUnitSuite
 
-class Exercise4Tests {
+class Exercise4Tests extends JUnitSuite {
   @Test
   def testMatasano = {
     val answer = decryptXorFromFile("/Exercise4TestData.txt")

@@ -2,8 +2,9 @@ package Set1
 
 import Exercise2._
 import org.junit.Test
+import org.scalatest.junit.JUnitSuite
 
-class Exercise2Tests {
+class Exercise2Tests extends JUnitSuite {
   @Test
   def testMatasano2 = {
     val message1 = "1c0111001f010100061a024b53535009181c"
