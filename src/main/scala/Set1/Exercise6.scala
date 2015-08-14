@@ -2,6 +2,7 @@ package Set1
 
 import java.nio.charset.StandardCharsets
 
+import Set1.Exercise3._
 import Util.Util._
 
 object Exercise6 {
@@ -42,5 +43,19 @@ object Exercise6 {
     (0 until keySize).map { start =>
       (start until end by keySize).map { index => ciphertext(index) }.toArray
     }.toArray
+  }
+
+  def decryptRepeatingKeyXor(ciphertextBytes: Array[Byte]) : String = {
+    val keySize = getProbableKeySize(ciphertextBytes, 40)
+    val eachSingleByteCiphertext : Array[Array[Byte]] = subCiphertexts(ciphertextBytes, keySize)
+
+    // TODO: Below is the first failure. Mutable data...
+    val jumbledAnswers : List[String] = eachSingleByteCiphertext.map { c => decryptSingleByteXor(toHexString(c)) }.toList
+    var answer : String = ""
+    for(i <- 0 until 100){
+      jumbledAnswers.foreach(line => if(i < line.length) {answer += line(i)})
+      answer.mkString
+    }
+    answer
   }
 }

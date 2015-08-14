@@ -89,6 +89,14 @@ class Exercise6Tests extends JUnitSuite {
     assert(matasanoAnswer==answer)
   }
 
+  @Test
+  def testMatasano2 = {
+    val encodedBase64 = Source.fromURL(getClass.getResource("/Exercise6TestData.txt")).getLines.mkString
+    val ciphertextBytes : Array[Byte] = java.util.Base64.getDecoder().decode(encodedBase64)
+    val answer = decryptRepeatingKeyXor(ciphertextBytes)
+    assert(matasanoAnswer==answer)
+  }
+
 
 
   // Some string hackery here with the replaceAll method calls.
