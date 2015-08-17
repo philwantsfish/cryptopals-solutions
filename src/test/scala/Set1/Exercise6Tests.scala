@@ -17,7 +17,7 @@ class Exercise6Tests extends JUnitSuite {
     val b2 = 7.toByte
     assert(3 == hammingWeight(b2), s"3 did not equal ${hammingWeight(b2)}")
 
-    val b3 : Byte = (0xff).toByte
+    val b3: Byte = (0xff).toByte
     assert(8 == hammingWeight(b3), s"8 did not equal ${hammingWeight(b3)}")
   }
 
@@ -51,7 +51,7 @@ class Exercise6Tests extends JUnitSuite {
   @Test
   def testProbableKeySize = {
     val encodedBase64 = Source.fromURL(getClass.getResource("/Exercise6TestData.txt")).getLines.mkString
-    val ciphertextBytes : Array[Byte] = java.util.Base64.getDecoder().decode(encodedBase64)
+    val ciphertextBytes: Array[Byte] = java.util.Base64.getDecoder().decode(encodedBase64)
 
     val keySize = getProbableKeySize(ciphertextBytes, 40)
     assert(keySize == 29, s"Detecting probable key size of ${keySize} but should be 29")
@@ -75,30 +75,34 @@ class Exercise6Tests extends JUnitSuite {
   @Test
   def testMatasano = {
     val encodedBase64 = Source.fromURL(getClass.getResource("/Exercise6TestData.txt")).getLines.mkString
-    val ciphertextBytes : Array[Byte] = java.util.Base64.getDecoder().decode(encodedBase64)
+    val ciphertextBytes: Array[Byte] = java.util.Base64.getDecoder().decode(encodedBase64)
     val keySize = getProbableKeySize(ciphertextBytes, 40)
-    val eachSingleByteCiphertext : Array[Array[Byte]] = subCiphertexts(ciphertextBytes, keySize)
+    val eachSingleByteCiphertext: Array[Array[Byte]] = subCiphertexts(ciphertextBytes, keySize)
 
     // TODO: Below is the first failure. Mutable data...
-    val jumbledAnswers : List[String] = eachSingleByteCiphertext.map { c => decryptSingleByteXor(toHexString(c)) }.toList
-    var answer : String = ""
-    for(i <- 0 until 100){
-      jumbledAnswers.foreach(line => if(i < line.length) {answer += line(i)})
+    val jumbledAnswers: List[String] = eachSingleByteCiphertext.map { c => decryptSingleByteXor(toHexString(c)) }.toList
+    var answer: String = ""
+    for (i <- 0 until 100) {
+      jumbledAnswers.foreach(line => if (i < line.length) {
+        answer += line(i)
+      })
       answer.mkString
     }
-    assert(matasanoAnswer==answer)
+    assert(Exercise6Tests.matasanoAnswer == answer)
   }
 
   @Test
   def testMatasano2 = {
     val encodedBase64 = Source.fromURL(getClass.getResource("/Exercise6TestData.txt")).getLines.mkString
-    val ciphertextBytes : Array[Byte] = java.util.Base64.getDecoder().decode(encodedBase64)
+    val ciphertextBytes: Array[Byte] = java.util.Base64.getDecoder().decode(encodedBase64)
     val answer = decryptRepeatingKeyXor(ciphertextBytes)
-    assert(matasanoAnswer==answer)
+    assert(Exercise6Tests.matasanoAnswer == answer)
   }
 
+}
 
 
+object Exercise6Tests {
   // Some string hackery here with the replaceAll method calls.
   // The first one replaces windows \r\n with unix \n to normalize the line endings
   // The second replaceAll is because the answer has spaces at the end of each line, so replace each newline with space newline

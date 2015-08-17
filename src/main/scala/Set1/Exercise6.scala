@@ -15,7 +15,7 @@ object Exercise6 {
   }
 
   def hammingDistanceASCII(str1 : String, str2: String) : Int = { hammingDistance(str1.getBytes(StandardCharsets.US_ASCII), str2.getBytes(StandardCharsets.US_ASCII)) }
-  def hammingDistanceHex(str1 : String, str2: String) : Int = { hammingDistance(toByteArray(str1), toByteArray(str2)) }
+  def hammingDistanceHex(str1 : String, str2: String) : Int = { hammingDistance(hexStringToByteArray(str1), hexStringToByteArray(str2)) }
   def hammingDistance(b1 : Array[Byte], b2: Array[Byte]) : Int = {
     if(b1.length != b2.length) throw new Exception(s"Need to have equal sized arrays. You passed sizes of  ${b1.length} and ${b2.length}")
     (b1 zip b2).map{case(b1,b2) => hammingWeight((b1^b2).toByte)}.sum

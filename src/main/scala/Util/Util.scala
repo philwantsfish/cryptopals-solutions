@@ -1,7 +1,7 @@
 package Util
 
 object Util {
-  def toByteArray(hexString : String) : Array[Byte] = {
+  def hexStringToByteArray(hexString : String) : Array[Byte] = {
     if (hexString.contains("[^0-9A-Fa-f]") || hexString.length % 2 != 0) throw new Exception(s"Not a hex string: ${hexString}")
     hexString.grouped(2).map(Integer.parseInt(_,16).toByte).toArray
   }
