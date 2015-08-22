@@ -52,7 +52,7 @@ object Exercise6 {
     // TODO: Below is the first failure. Mutable data...
     val jumbledAnswers : List[String] = eachSingleByteCiphertext.map { c => decryptSingleByteXor(toHexString(c)) }.toList
     var answer : String = ""
-    for(i <- 0 until 100){
+    for(i <- 0 until jumbledAnswers.head.length){
       jumbledAnswers.foreach(line => if(i < line.length) {answer += line(i)})
       answer.mkString
     }

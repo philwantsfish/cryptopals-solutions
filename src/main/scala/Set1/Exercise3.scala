@@ -6,12 +6,12 @@ import Util.Util._
 object Exercise3 {
   def singleByteXor(hexString : String, key : String) : String = {
     val fullKey = key * (hexString.length / 2)
-    fixedXor(hexString, fullKey)
+    xor(hexString, fullKey)
   }
 
   def singleByteXor(hexString : String, key : Byte) : String = {
     val fullKey = Array.fill[Byte](hexString.length/2)(key)
-    fixedXor(hexString, toHexString(fullKey))
+    xor(hexString, toHexString(fullKey))
   }
 
   def getAllPossibleMessages(cipherText: String) : Array[String] = (0x00 to 0xFF).map{ key => singleByteXor(cipherText, key.toByte) }.toArray.map{a => toASCIIString(hexStringToByteArray(a))}

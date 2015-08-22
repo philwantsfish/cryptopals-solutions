@@ -8,8 +8,4 @@ object Util {
 
   def toHexString(byteArray : Array[Byte]) : String = { byteArray.map("%02X".format(_)).mkString }
   def toASCIIString(byteArray : Array[Byte]) : String = { new String(byteArray, "ASCII") }
-
-  /*def isPrintableASCIIChar(b : Byte) : Boolean = { ((b&0xff) > 31 && (b&0xff) < 127) || (b&0xff)==9 || (b&0xff)==13 }
-  def isASCIIString(byteArray : Array[Byte]) : Boolean = { byteArray.count(b => !isPrintableASCIIChar(b)) == 0 }
-  def getASCIICharCount(message : String) : Int = { toByteArray(message).count(isPrintableASCIIChar) }*/
 }
