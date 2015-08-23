@@ -29,6 +29,24 @@ class Exercise10Tests extends JUnitSuite {
   }
 
   @Test
+  def testECBEncrypt() = {
+    val key = "YELLOW SUBMARINE".getBytes
+    val data = "Hello, friend. Hello, friend. That's lame. Maybe I should give you a name. But that's a slippery slope. You're only in my head. We have to remember that.".getBytes
+    val solution = "85be107c273d715bd62c3e4caf654ad35023268ef2e118fb3a97232284978f0b8bc59899c6c6bf15b21faea08ef8a92d8b228320b1355fbc4af6a5e451a2cb1c1307fb59928fd21f7748609feb899afd76b6b80621dc9d73dbecd4fb363665e39d89efd38422713c04c7c1eb6651a86f6023cedea27a1087bd5f6ee769d456338f239003cba54a87fe9722ebfa6a8cc2c2c89c501262ce23f27ab013d712377f"
+    val attempt = encryptECB(data, key, "AES/ECB/NoPadding")
+    assert(toHexString(attempt.toArray).toLowerCase == solution)
+  }
+
+  @Test
+  def testECBDecrypt() = {
+    val key = "YELLOW SUBMARINE".getBytes
+    val data = hexStringToByteArray("85be107c273d715bd62c3e4caf654ad35023268ef2e118fb3a97232284978f0b8bc59899c6c6bf15b21faea08ef8a92d8b228320b1355fbc4af6a5e451a2cb1c1307fb59928fd21f7748609feb899afd76b6b80621dc9d73dbecd4fb363665e39d89efd38422713c04c7c1eb6651a86f6023cedea27a1087bd5f6ee769d456338f239003cba54a87fe9722ebfa6a8cc2c2c89c501262ce23f27ab013d712377f")
+    val solution = "Hello, friend. Hello, friend. That's lame. Maybe I should give you a name. But that's a slippery slope. You're only in my head. We have to remember that."
+    val attempt = decryptECB(data, key, "AES/ECB/NoPadding")
+    assert(toASCIIString(attempt.toArray) == solution)
+  }
+
+  @Test
   def testCBCEncrypt() = {
     val data = "Hello, friend. Hello, friend. That's lame. Maybe I should give you a name. But that's a slippery slope. You're only in my head. We have to remember that.".getBytes
     val key : Seq[Byte] = "YELLOW SUBMARINE".getBytes

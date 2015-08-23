@@ -12,7 +12,7 @@ object Exercise8 {
 
   def getDuplicateBlockCount(ciphertext: Array[Byte], keySize: Int) : Int = { getDuplicateBlockCount(toHexString(ciphertext), keySize*2) }
 
-  def detectECB(ciphertexts: Array[String], keySize: Int) : Array[(Int, String)]= {
-    ciphertexts.map{ ciphertext => (getDuplicateBlockCount(ciphertext, keySize), ciphertext) }.filter{ _._1 > 1}
+  def detectAllECBData(ciphertexts: Array[String], keySize: Int) : Array[(Int, String)]= {
+    ciphertexts.map{ ciphertext => (getDuplicateBlockCount(ciphertext, keySize), ciphertext) }.filter{ _._1 > 0}
   }
 }

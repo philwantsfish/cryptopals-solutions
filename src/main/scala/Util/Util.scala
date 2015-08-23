@@ -7,5 +7,6 @@ object Util {
   }
 
   def toHexString(byteArray : Array[Byte]) : String = { byteArray.map("%02X".format(_)).mkString }
+  def toHexString(byteArray : Seq[Byte]) : String = { byteArray.map("%02X".format(_)).mkString }
   def toASCIIString(byteArray : Array[Byte]) : String = { new String(byteArray, "ASCII") }
 }

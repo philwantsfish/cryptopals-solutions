@@ -27,6 +27,16 @@ object Exercise10 {
     cipher.doFinal(data.toArray)
   }
 
+  def encryptECB(data: Seq[Byte], key: Seq[Byte], cipherType: String) : Seq[Byte] = {
+    val paddedData = PKCS7(data, key.size)
+    paddedData.grouped(16).map{ b => encryptBlock(cipherType, key, b) }.toSeq.flatten
+  }
+
+  def decryptECB(data: Seq[Byte], key: Seq[Byte], cipherType: String) : Seq[Byte] = {
+    val plaintext : Seq[Byte] = data.grouped(key.size).map{ b => decryptBlock(cipherType, key, b) }.toSeq.flatten
+    removePadding(plaintext)
+  }
+
   def encryptCBC(data: Seq[Byte], key: Seq[Byte], IV: Seq[Byte], cipherType: String) : Seq[Byte] = {
     val paddedData = PKCS7(data, 16)
     val blocks : Seq[Seq[Byte]] = paddedData.grouped(key.length).toSeq
