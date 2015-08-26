@@ -30,18 +30,15 @@ object Exercise12 {
   }
 
   def createAnswerMap(func: OracleFunction, blocksize: Int, blockPosition:Int, knownBytes: Seq[Byte]): Map[Seq[Byte], Seq[Byte]] = {
-    if(knownBytes.length % blocksize == 1) throw new RuntimeException(s"Wrong number of known bytes, should be ${blocksize-1} but got ${knownBytes.length}")
+    if(knownBytes.length % blocksize == 1) throw new RuntimeException(s"Wrong number of known bytes to create map, should be ${blocksize-1} but got ${knownBytes.length}")
     val knownPlaintexts: Seq[Seq[Byte]] = Seq.range(0, 256).map{v => knownBytes :+ v.toByte }
-    val ciphertexts: Seq[Seq[Byte]] = knownPlaintexts.map{p => func(p).slice(blocksize*blockPosition, blocksize + (blocksize*blockPosition))}
-    val answerMap: Map[Seq[Byte], Seq[Byte]] = (ciphertexts zip knownPlaintexts).toMap
-    answerMap
+    val ciphertexts    : Seq[Seq[Byte]] = knownPlaintexts.map{p => func(p).slice(blocksize*blockPosition, blocksize + (blocksize*blockPosition))}
+    (ciphertexts zip knownPlaintexts).toMap
   }
 
   def recoverSecret(func: OracleFunction, blocksize: Int): Seq[Byte] = {
     var secret : Seq[Byte] = Seq[Byte]()
-    val secretSize = func("".getBytes).length
-    val numberOfBlocks = secretSize/16
-
+    val numberOfBlocks = func("".getBytes).length/blocksize
     
     for(i <- 0 to numberOfBlocks-1){
       secret = secret ++ recoverBlock(func, blocksize, secret, i)
@@ -53,25 +50,24 @@ object Exercise12 {
   def recoverBlock(func: OracleFunction, blocksize: Int, previousRecoveredBytes: Seq[Byte], blockPosition: Int): Seq[Byte] = {
     var recoveredBlock : Seq[Byte] = Seq[Byte]()
 
-    for(i <- 0 to blocksize-1){
-      val fillerBytes: Seq[Byte] = ("A"*(blocksize-1-i)).getBytes
+    for(i <- 1 to blocksize){
+      val fillerBytes: Seq[Byte] = Seq.fill[Byte](blocksize-i)('A'.toByte)
       val bytesToCreateMapFrom =  fillerBytes ++ previousRecoveredBytes ++ recoveredBlock
       val map = createAnswerMap(func, blocksize, blockPosition, bytesToCreateMapFrom)
-      var recoveredByte = 0x00.toByte
-      try {
-        recoveredByte = recoverSingleByte(func, fillerBytes, map, blocksize, blockPosition)
-      } catch {
-        case e: Exception => return recoveredBlock
+      var recoveredByte = 0x02.toByte
+
+      val ciphertext = func(fillerBytes).slice(blocksize*blockPosition, blocksize + (blocksize*blockPosition))
+      //The last block may have partial plaintext, but the block cipher will create a full block of ciphertext
+      // Once we have retrieved all of the secret the map will no longer have an answer
+      // Return in this case
+      // TODO, i thought the padding should make the plaintext a full block. Not sure why it isnt
+      val plaintextOption = map.get(ciphertext)
+      plaintextOption match {
+        case Some(plaintext) => recoveredByte = plaintext.last
+        case None => return recoveredBlock
       }
       recoveredBlock = recoveredBlock :+ recoveredByte
     }
     recoveredBlock
-  }
-
-
-  def recoverSingleByte(func: OracleFunction, fillerBytes: Seq[Byte], map: Map[Seq[Byte], Seq[Byte]], blocksize: Int, blockPosition: Int): Byte = {
-    val ciphertext = func(fillerBytes).slice(blocksize*blockPosition, blocksize + (blocksize*blockPosition))
-    val plaintextBlock = map(ciphertext)
-    plaintextBlock.last
   }
 }

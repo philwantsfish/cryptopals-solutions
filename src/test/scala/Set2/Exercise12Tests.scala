@@ -28,15 +28,6 @@ class Exercise12Tests extends JUnitSuite {
   }
 
   @Test
-  def testRecoverByte() = {
-    val blocksize = 16
-    val bytes = ("A"*(blocksize-1)).getBytes
-    val map = createAnswerMap(encryption_oracle, blocksize, 0, bytes)
-    val b: Byte = recoverSingleByte(encryption_oracle, bytes, map, blocksize, 0)
-    assert(b == 'R'.toByte)
-  }
-
-  @Test
   def testRecoverBlock() = {
     val blocksize = 16
     val b: Seq[Byte] = recoverBlock(encryption_oracle, blocksize, Seq[Byte](), 0)
