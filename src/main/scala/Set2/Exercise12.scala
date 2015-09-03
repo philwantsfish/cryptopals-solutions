@@ -36,10 +36,11 @@ object Exercise12 {
     (ciphertexts zip knownPlaintexts).toMap
   }
 
+
   def recoverSecret(func: OracleFunction, blocksize: Int): Seq[Byte] = {
     var secret : Seq[Byte] = Seq[Byte]()
     val numberOfBlocks = func("".getBytes).length/blocksize
-    
+
     for(i <- 0 to numberOfBlocks-1){
       secret = secret ++ recoverBlock(func, blocksize, secret, i)
     }

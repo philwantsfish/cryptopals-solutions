@@ -60,7 +60,7 @@ class Exercise13Tests {
     // We know the last block must contain admin, the character before admin is = which is filtered
     // therefore the last block must be admin + padding bytes
     // Given this, the second block must contain the 13 bytes &uid=10&role=
-    // Which leaves us 13 bytes for the email string. 
+    // Which leaves us 13 bytes for the email string.
     // b1: email=phil@fish.
     // b2: com&uid=10&role=
     // b3: admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b

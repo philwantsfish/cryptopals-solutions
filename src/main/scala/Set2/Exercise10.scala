@@ -57,9 +57,11 @@ object Exercise10 {
     data.slice(0, data.length-paddingAmount)
   }
 
+  // Use ciphertype AES/ECB/NoPadding, the implementation does CBC
   def decryptCBC(data: Seq[Byte], key: Seq[Byte], IV: Seq[Byte], cipherType: String) : Seq[Byte] = {
-    val cipherBlocks : Seq[Seq[Byte]] = Seq(IV) ++ data.grouped(16).toSeq.dropRight(1)
-    val decryptedBlocks : Seq[Seq[Byte]] = data.grouped(16).map{ b => decryptBlock(cipherType, key, b) }.toSeq
+    val blocksize = 16
+    val cipherBlocks : Seq[Seq[Byte]] = Seq(IV) ++ data.grouped(blocksize).toSeq.dropRight(1)
+    val decryptedBlocks : Seq[Seq[Byte]] = data.grouped(blocksize).map{ b => decryptBlock(cipherType, key, b) }.toSeq
     removePadding((cipherBlocks zip decryptedBlocks).flatMap{ case(b1,b2) => xor(b1,b2)})
   }
 
