@@ -23,4 +23,10 @@ class Exercise15Tests {
     val testString = "ICE ICE BABY\u0001\u0002\u0003\u0004".getBytes
     assert(!isValidPadding(testString, blocksize))
   }
+
+  @Test
+  def testNegative() = {
+    val testString = "ICE ICE BABY\u0001\u0002\u0003\u0004".getBytes :+ (-20.toByte)
+    assert(!isValidPadding(testString, blocksize))
+  }
 }

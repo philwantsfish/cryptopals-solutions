@@ -65,4 +65,12 @@ object Exercise10 {
     removePadding((cipherBlocks zip decryptedBlocks).flatMap{ case(b1,b2) => xor(b1,b2)})
   }
 
+  // Use ciphertype AES/ECB/NoPadding, the implementation does CBC
+  def decryptCBCKeepPadding(data: Seq[Byte], key: Seq[Byte], IV: Seq[Byte], cipherType: String) : Seq[Byte] = {
+    val blocksize = 16
+    val cipherBlocks : Seq[Seq[Byte]] = Seq(IV) ++ data.grouped(blocksize).toSeq.dropRight(1)
+    val decryptedBlocks : Seq[Seq[Byte]] = data.grouped(blocksize).map{ b => decryptBlock(cipherType, key, b) }.toSeq
+    (cipherBlocks zip decryptedBlocks).flatMap{ case(b1,b2) => xor(b1,b2)}
+  }
+
 }
