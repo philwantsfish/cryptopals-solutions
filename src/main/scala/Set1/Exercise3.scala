@@ -16,6 +16,8 @@ object Exercise3 {
 
   def getAllPossibleMessages(cipherText: String) : Array[String] = (0x00 to 0xFF).map{ key => singleByteXor(cipherText, key.toByte) }.toArray.map{a => toASCIIString(hexStringToByteArray(a))}
   def scoreMessageWithFrequnecyAnalysis(message : String) : Double = { message.filter{c => (c > 'a' && c < 'z') || (c > 'A' && c < 'Z') || (c == ' ')}.map{c => letterFrequencyMap(c.toLower)}.foldLeft(0.0)(_ + _) }
+//  def scoreMessageWithFrequnecyAnalysis(message : String) : Double = { message.filter{c => (c > 'a' && c < 'z') || (c > 'A' && c < 'Z') || (c == ' ') || (c == '\'')}.map{c => letterFrequencyMap(c.toLower)}.foldLeft(0.0)(_ + _) }
+//  def scoreMessageWithFrequnecyAnalysis(message : String) : Double = { message.filter{c => letters.contains(c)}.map{c => letterFrequencyMap(c.toLower)}.foldLeft(0.0)(_ + _) }
   def scoreMessagesWithFrequencyAnalysis(messages: Array[String]) = messages.map{ m => (scoreMessageWithFrequnecyAnalysis(m), m) }.sortWith(_._1 > _._1)
 
   def decryptSingleByteXor(cipherText: String) : String = {scoreMessagesWithFrequencyAnalysis(getAllPossibleMessages(cipherText))(0)._2}
