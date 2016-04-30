@@ -1,6 +1,6 @@
 # Matasano Crypto Challenge Solutions
 
-This repository contains solutions for the Matasano Crypto Challenges also known as the cryptopals puzzles. The solutions are writtin in Scala. To execute them run the command: sbt test, or to run a specific exercise sbt "test-only *ExerciseXTests"
+This repository contains solutions for the Matasano Crypto Challenges also known as the cryptopals puzzles. The solutions are written in Scala and built with sbt. To execute all of the tests run the command: sbt test, or to run a specific exercise run the command: sbt "test-only *ExerciseXTests"
 
 
 | Set1 |  |  |
