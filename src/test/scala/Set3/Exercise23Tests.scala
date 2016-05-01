@@ -69,19 +69,56 @@ class Exercise23Tests extends FlatSpec with Matchers {
     untemper(out2) shouldBe state2
   }
 
-  it should "be able to clone a mersenne twister" in {
+  it should "be able to clone a mersenne twister starting from the index 0" in {
     val mt = new MT19937(1)
-    val clonedmt = cloneMT19937(mt)
+    val clonedmt = cloneMT19937FromIndex0(mt)
 
-    // Confirm the indexs are equal
-    mt.index shouldBe 624
-    mt.index shouldBe clonedmt.index
+    // `mt` will twist and set index to 0 before generating the next number.
+    // The cloned MT19937 already contains the twisted state and is index 0
+    MT19937.twist(mt.state) shouldBe clonedmt.state
 
-    // cloning it caused us to take 624 ints. Fast forward this reference to catch up
-    (0 until 624).foreach { i => mt.nextInt() }
+    // Confirm they generate the same numbers
+    (1 to 700).foreach { i => mt.nextInt() shouldBe clonedmt.nextInt() }
+  }
 
-    // Confirm the states are the same and that they produce the same integers
-    mt.state shouldBe clonedmt.state
-    (1 to 50).foreach { i => mt.nextInt() shouldBe clonedmt.nextInt() }
+  it should "be able to clone a mersenne twister starting from the index 0 using ints" in {
+    val mt = new MT19937(1)
+    val ints = (1 to 624).map { i => mt.nextInt() }
+    val clonedmt = cloneMT19937FromIndex0FromInts(ints)
+
+    // Cloning this way required generating 624 ints. Lets fastforward the clonedmt to the same state
+    // Confirm we generate the same numbers mt already generated
+    (0 until 624).foreach { i => ints(i) shouldBe clonedmt.nextInt() }
+
+    // Confirm they generate the same numbers onwards
+    (1 to 700).foreach { i => mt.nextInt() shouldBe clonedmt.nextInt() }
+  }
+
+  it should "be able to clone a mersenne twister from a non zero index" in {
+    val mt = new MT19937(1)
+    (1 to 55).foreach { i => mt.nextInt() }
+    mt.nextInt()
+    mt.nextInt()
+
+    val clonedMtOption = cloneMT19937(mt)
+
+    val anothermt = new MT19937(1)
+    (1 to 57).foreach {  i => anothermt.nextInt() }
+
+    (1 to 1000).foreach { i => clonedMtOption.nextInt() shouldBe anothermt.nextInt() }
+  }
+
+  it should "clone an MT19937 from any index" in {
+    (1 to 624).foreach { rand =>
+      val mt = new MT19937(0x12345678)
+      val mt2 = new MT19937(0x12345678)
+
+      (1 to rand).foreach { i => mt.nextInt() }
+      (1 to rand).foreach { i => mt2.nextInt() }
+
+      val clonedmt = cloneMT19937(mt)
+
+      (1 to 2000).foreach { i => clonedmt.nextInt() shouldBe mt2.nextInt() }
+    }
   }
 }

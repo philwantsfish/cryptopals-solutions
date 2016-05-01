@@ -79,15 +79,40 @@ object Exercise23 {
     original
   }
 
-  def cloneMT19937(mt: MT19937): MT19937 = {
-    val seed = 1
-    val mt = new MT19937(seed)
+  /**
+   * To clone a MT19337 we need to collect 624 consecutive integers starting from a fresh state.
+   * Then, untempering the collected integers gives us a replica of the MT19937s state. Our clone
+   * will start producing the same integers. Set the index to 0 because this state has already
+   * been twisted. It will produce the same numbers as the passed in generator
+   */
+  def cloneMT19937FromIndex0(mt: MT19937): MT19937 = {
+    val mt = new MT19937(1)
 
-    val state: Seq[Int] = (0 until 624).map { i => untemper(mt.nextInt()) }
+    val ints = (0 until 624).map { i => mt.nextInt() }
+    val state = ints.map { i => untemper(i) }
 
     val newmt = new MT19937(1)
     newmt.state = state
+    newmt.index = 0
 
     newmt
+  }
+
+  /** Same as the cloneMT19937FromIndex0 */
+  def cloneMT19937FromIndex0FromInts(ints: Seq[Int]): MT19937 = {
+    require(ints.size == 624)
+    val state = ints.map { i => untemper(i) }
+
+    val newmt = new MT19937(1)
+    newmt.state = state
+    newmt.index = 0
+
+    newmt
+  }
+
+  def cloneMT19937(mt: MT19937): MT19937 = {
+    val ints: Seq[Int] = (1 to 624).map { i => mt.nextInt() }
+    val state: Seq[Int] = ints.slice(0, 624)
+    cloneMT19937FromIndex0FromInts(state)
   }
 }
