@@ -29,3 +29,9 @@ This repository contains solutions for the Matasano Crypto Challenges also known
 |-------------|----------|----------|
 | Exercise17 | [src](/src/main/scala/Set3/Exercise17.scala) | [test](/src/test/scala/Set3/Exercise17Tests.scala) |
 | Exercise18 | [src](/src/main/scala/Set3/Exercise18.scala) | [test](/src/test/scala/Set3/Exercise18Tests.scala) |
+| Exercise19 | [src](/src/main/scala/Set3/Exercise19.scala) | [test](/src/test/scala/Set3/Exercise19Tests.scala) |
+| Exercise20 | [src](/src/main/scala/Set3/Exercise20.scala) | [test](/src/test/scala/Set3/Exercise20Tests.scala) |
+| Exercise21 | [src](/src/main/scala/Set3/Exercise21.scala) | [test](/src/test/scala/Set3/Exercise21Tests.scala) |
+| Exercise22 | [src](/src/main/scala/Set3/Exercise22.scala) | [test](/src/test/scala/Set3/Exercise22Tests.scala) |
+| Exercise23 | [src](/src/main/scala/Set3/Exercise23.scala) | [test](/src/test/scala/Set3/Exercise23Tests.scala) |
+
